@@ -12,6 +12,9 @@ import {
 import { AppointmentsService } from './appointments.service.js';
 import { CreateAppointmentDto } from './dto/create-appointment.dto.js';
 import { UpdateAppointmentDto } from './dto/update-appointment.dto.js';
+import { CurrentUser } from '../auth/decorators/current-user.decorator.js';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.js';
+import { UseGuards } from '@nestjs/common';
 
 @Controller('appointments')
 export class AppointmentsController {
@@ -19,20 +22,43 @@ export class AppointmentsController {
     private readonly appointmentsService: AppointmentsService,
   ) {}
 
-  @Get()
-  findAll() {
-    return this.appointmentsService.findAll();
-  }
+@Get()
+@UseGuards(JwtAuthGuard)
+findAll(
+  @CurrentUser() user: {
+    sub: number;
+    email: string;
+    role: string;
+  },
+) {
+  return this.appointmentsService.findAllByUser(user.sub);
+}
 
-  @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
-    return this.appointmentsService.findOne(id);
-  }
+@Get(':id')
+@UseGuards(JwtAuthGuard)
+findOne(
+  @Param('id', ParseIntPipe) id: number,
+  @CurrentUser() user: {
+    sub: number;
+    email: string;
+    role: string;
+  },
+) {
+  return this.appointmentsService.findOneByUser(id, user.sub);
+}
 
   @Post()
-  create(@Body() dto: CreateAppointmentDto) {
-    return this.appointmentsService.create(dto);
-  }
+@UseGuards(JwtAuthGuard)
+create(
+  @Body() dto: CreateAppointmentDto,
+  @CurrentUser() user: {
+    sub: number;
+    email: string;
+    role: string;
+  },
+) {
+  return this.appointmentsService.create(dto, user.sub);
+}
 
   @Patch(':id')
   update(
