@@ -246,6 +246,7 @@ export type PetWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"Pet"> | Date | string
   owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   appointments?: Prisma.AppointmentListRelationFilter
+  clinicalRecords?: Prisma.ClinicalRecordListRelationFilter
 }
 
 export type PetOrderByWithRelationInput = {
@@ -259,6 +260,7 @@ export type PetOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   owner?: Prisma.UserOrderByWithRelationInput
   appointments?: Prisma.AppointmentOrderByRelationAggregateInput
+  clinicalRecords?: Prisma.ClinicalRecordOrderByRelationAggregateInput
 }
 
 export type PetWhereUniqueInput = Prisma.AtLeast<{
@@ -275,6 +277,7 @@ export type PetWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"Pet"> | Date | string
   owner?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   appointments?: Prisma.AppointmentListRelationFilter
+  clinicalRecords?: Prisma.ClinicalRecordListRelationFilter
 }, "id">
 
 export type PetOrderByWithAggregationInput = {
@@ -316,6 +319,7 @@ export type PetCreateInput = {
   updatedAt?: Date | string
   owner: Prisma.UserCreateNestedOneWithoutPetsInput
   appointments?: Prisma.AppointmentCreateNestedManyWithoutPetInput
+  clinicalRecords?: Prisma.ClinicalRecordCreateNestedManyWithoutPetInput
 }
 
 export type PetUncheckedCreateInput = {
@@ -328,6 +332,7 @@ export type PetUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutPetInput
+  clinicalRecords?: Prisma.ClinicalRecordUncheckedCreateNestedManyWithoutPetInput
 }
 
 export type PetUpdateInput = {
@@ -339,6 +344,7 @@ export type PetUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutPetsNestedInput
   appointments?: Prisma.AppointmentUpdateManyWithoutPetNestedInput
+  clinicalRecords?: Prisma.ClinicalRecordUpdateManyWithoutPetNestedInput
 }
 
 export type PetUncheckedUpdateInput = {
@@ -351,6 +357,7 @@ export type PetUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutPetNestedInput
+  clinicalRecords?: Prisma.ClinicalRecordUncheckedUpdateManyWithoutPetNestedInput
 }
 
 export type PetCreateManyInput = {
@@ -506,6 +513,20 @@ export type PetUpdateOneRequiredWithoutAppointmentsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.PetUpdateToOneWithWhereWithoutAppointmentsInput, Prisma.PetUpdateWithoutAppointmentsInput>, Prisma.PetUncheckedUpdateWithoutAppointmentsInput>
 }
 
+export type PetCreateNestedOneWithoutClinicalRecordsInput = {
+  create?: Prisma.XOR<Prisma.PetCreateWithoutClinicalRecordsInput, Prisma.PetUncheckedCreateWithoutClinicalRecordsInput>
+  connectOrCreate?: Prisma.PetCreateOrConnectWithoutClinicalRecordsInput
+  connect?: Prisma.PetWhereUniqueInput
+}
+
+export type PetUpdateOneRequiredWithoutClinicalRecordsNestedInput = {
+  create?: Prisma.XOR<Prisma.PetCreateWithoutClinicalRecordsInput, Prisma.PetUncheckedCreateWithoutClinicalRecordsInput>
+  connectOrCreate?: Prisma.PetCreateOrConnectWithoutClinicalRecordsInput
+  upsert?: Prisma.PetUpsertWithoutClinicalRecordsInput
+  connect?: Prisma.PetWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PetUpdateToOneWithWhereWithoutClinicalRecordsInput, Prisma.PetUpdateWithoutClinicalRecordsInput>, Prisma.PetUncheckedUpdateWithoutClinicalRecordsInput>
+}
+
 export type PetCreateWithoutOwnerInput = {
   name: string
   species: string
@@ -514,6 +535,7 @@ export type PetCreateWithoutOwnerInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   appointments?: Prisma.AppointmentCreateNestedManyWithoutPetInput
+  clinicalRecords?: Prisma.ClinicalRecordCreateNestedManyWithoutPetInput
 }
 
 export type PetUncheckedCreateWithoutOwnerInput = {
@@ -525,6 +547,7 @@ export type PetUncheckedCreateWithoutOwnerInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutPetInput
+  clinicalRecords?: Prisma.ClinicalRecordUncheckedCreateNestedManyWithoutPetInput
 }
 
 export type PetCreateOrConnectWithoutOwnerInput = {
@@ -575,6 +598,7 @@ export type PetCreateWithoutAppointmentsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   owner: Prisma.UserCreateNestedOneWithoutPetsInput
+  clinicalRecords?: Prisma.ClinicalRecordCreateNestedManyWithoutPetInput
 }
 
 export type PetUncheckedCreateWithoutAppointmentsInput = {
@@ -586,6 +610,7 @@ export type PetUncheckedCreateWithoutAppointmentsInput = {
   ownerId: number
   createdAt?: Date | string
   updatedAt?: Date | string
+  clinicalRecords?: Prisma.ClinicalRecordUncheckedCreateNestedManyWithoutPetInput
 }
 
 export type PetCreateOrConnectWithoutAppointmentsInput = {
@@ -612,6 +637,7 @@ export type PetUpdateWithoutAppointmentsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   owner?: Prisma.UserUpdateOneRequiredWithoutPetsNestedInput
+  clinicalRecords?: Prisma.ClinicalRecordUpdateManyWithoutPetNestedInput
 }
 
 export type PetUncheckedUpdateWithoutAppointmentsInput = {
@@ -623,6 +649,69 @@ export type PetUncheckedUpdateWithoutAppointmentsInput = {
   ownerId?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  clinicalRecords?: Prisma.ClinicalRecordUncheckedUpdateManyWithoutPetNestedInput
+}
+
+export type PetCreateWithoutClinicalRecordsInput = {
+  name: string
+  species: string
+  breed?: string | null
+  birthDate?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  owner: Prisma.UserCreateNestedOneWithoutPetsInput
+  appointments?: Prisma.AppointmentCreateNestedManyWithoutPetInput
+}
+
+export type PetUncheckedCreateWithoutClinicalRecordsInput = {
+  id?: number
+  name: string
+  species: string
+  breed?: string | null
+  birthDate?: Date | string | null
+  ownerId: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  appointments?: Prisma.AppointmentUncheckedCreateNestedManyWithoutPetInput
+}
+
+export type PetCreateOrConnectWithoutClinicalRecordsInput = {
+  where: Prisma.PetWhereUniqueInput
+  create: Prisma.XOR<Prisma.PetCreateWithoutClinicalRecordsInput, Prisma.PetUncheckedCreateWithoutClinicalRecordsInput>
+}
+
+export type PetUpsertWithoutClinicalRecordsInput = {
+  update: Prisma.XOR<Prisma.PetUpdateWithoutClinicalRecordsInput, Prisma.PetUncheckedUpdateWithoutClinicalRecordsInput>
+  create: Prisma.XOR<Prisma.PetCreateWithoutClinicalRecordsInput, Prisma.PetUncheckedCreateWithoutClinicalRecordsInput>
+  where?: Prisma.PetWhereInput
+}
+
+export type PetUpdateToOneWithWhereWithoutClinicalRecordsInput = {
+  where?: Prisma.PetWhereInput
+  data: Prisma.XOR<Prisma.PetUpdateWithoutClinicalRecordsInput, Prisma.PetUncheckedUpdateWithoutClinicalRecordsInput>
+}
+
+export type PetUpdateWithoutClinicalRecordsInput = {
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  species?: Prisma.StringFieldUpdateOperationsInput | string
+  breed?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  owner?: Prisma.UserUpdateOneRequiredWithoutPetsNestedInput
+  appointments?: Prisma.AppointmentUpdateManyWithoutPetNestedInput
+}
+
+export type PetUncheckedUpdateWithoutClinicalRecordsInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  species?: Prisma.StringFieldUpdateOperationsInput | string
+  breed?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  birthDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  ownerId?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutPetNestedInput
 }
 
 export type PetCreateManyOwnerInput = {
@@ -643,6 +732,7 @@ export type PetUpdateWithoutOwnerInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   appointments?: Prisma.AppointmentUpdateManyWithoutPetNestedInput
+  clinicalRecords?: Prisma.ClinicalRecordUpdateManyWithoutPetNestedInput
 }
 
 export type PetUncheckedUpdateWithoutOwnerInput = {
@@ -654,6 +744,7 @@ export type PetUncheckedUpdateWithoutOwnerInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   appointments?: Prisma.AppointmentUncheckedUpdateManyWithoutPetNestedInput
+  clinicalRecords?: Prisma.ClinicalRecordUncheckedUpdateManyWithoutPetNestedInput
 }
 
 export type PetUncheckedUpdateManyWithoutOwnerInput = {
@@ -673,10 +764,12 @@ export type PetUncheckedUpdateManyWithoutOwnerInput = {
 
 export type PetCountOutputType = {
   appointments: number
+  clinicalRecords: number
 }
 
 export type PetCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   appointments?: boolean | PetCountOutputTypeCountAppointmentsArgs
+  clinicalRecords?: boolean | PetCountOutputTypeCountClinicalRecordsArgs
 }
 
 /**
@@ -696,6 +789,13 @@ export type PetCountOutputTypeCountAppointmentsArgs<ExtArgs extends runtime.Type
   where?: Prisma.AppointmentWhereInput
 }
 
+/**
+ * PetCountOutputType without action
+ */
+export type PetCountOutputTypeCountClinicalRecordsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ClinicalRecordWhereInput
+}
+
 
 export type PetSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -708,6 +808,7 @@ export type PetSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = ru
   updatedAt?: boolean
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   appointments?: boolean | Prisma.Pet$appointmentsArgs<ExtArgs>
+  clinicalRecords?: boolean | Prisma.Pet$clinicalRecordsArgs<ExtArgs>
   _count?: boolean | Prisma.PetCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["pet"]>
 
@@ -750,6 +851,7 @@ export type PetOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
 export type PetInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   owner?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   appointments?: boolean | Prisma.Pet$appointmentsArgs<ExtArgs>
+  clinicalRecords?: boolean | Prisma.Pet$clinicalRecordsArgs<ExtArgs>
   _count?: boolean | Prisma.PetCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type PetIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -764,6 +866,7 @@ export type $PetPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   objects: {
     owner: Prisma.$UserPayload<ExtArgs>
     appointments: Prisma.$AppointmentPayload<ExtArgs>[]
+    clinicalRecords: Prisma.$ClinicalRecordPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -1170,6 +1273,7 @@ export interface Prisma__PetClient<T, Null = never, ExtArgs extends runtime.Type
   readonly [Symbol.toStringTag]: "PrismaPromise"
   owner<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   appointments<T extends Prisma.Pet$appointmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Pet$appointmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AppointmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  clinicalRecords<T extends Prisma.Pet$clinicalRecordsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Pet$clinicalRecordsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ClinicalRecordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1629,6 +1733,30 @@ export type Pet$appointmentsArgs<ExtArgs extends runtime.Types.Extensions.Intern
   take?: number
   skip?: number
   distinct?: Prisma.AppointmentScalarFieldEnum | Prisma.AppointmentScalarFieldEnum[]
+}
+
+/**
+ * Pet.clinicalRecords
+ */
+export type Pet$clinicalRecordsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ClinicalRecord
+   */
+  select?: Prisma.ClinicalRecordSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ClinicalRecord
+   */
+  omit?: Prisma.ClinicalRecordOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ClinicalRecordInclude<ExtArgs> | null
+  where?: Prisma.ClinicalRecordWhereInput
+  orderBy?: Prisma.ClinicalRecordOrderByWithRelationInput | Prisma.ClinicalRecordOrderByWithRelationInput[]
+  cursor?: Prisma.ClinicalRecordWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ClinicalRecordScalarFieldEnum | Prisma.ClinicalRecordScalarFieldEnum[]
 }
 
 /**

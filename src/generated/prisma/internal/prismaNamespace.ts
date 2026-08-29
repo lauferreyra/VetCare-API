@@ -400,7 +400,8 @@ export const ModelName = {
   User: 'User',
   Pet: 'Pet',
   Appointment: 'Appointment',
-  AppointmentSlot: 'AppointmentSlot'
+  AppointmentSlot: 'AppointmentSlot',
+  ClinicalRecord: 'ClinicalRecord'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -416,7 +417,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "pet" | "appointment" | "appointmentSlot"
+    modelProps: "user" | "pet" | "appointment" | "appointmentSlot" | "clinicalRecord"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -716,6 +717,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ClinicalRecord: {
+      payload: Prisma.$ClinicalRecordPayload<ExtArgs>
+      fields: Prisma.ClinicalRecordFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ClinicalRecordFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClinicalRecordPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ClinicalRecordFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClinicalRecordPayload>
+        }
+        findFirst: {
+          args: Prisma.ClinicalRecordFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClinicalRecordPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ClinicalRecordFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClinicalRecordPayload>
+        }
+        findMany: {
+          args: Prisma.ClinicalRecordFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClinicalRecordPayload>[]
+        }
+        create: {
+          args: Prisma.ClinicalRecordCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClinicalRecordPayload>
+        }
+        createMany: {
+          args: Prisma.ClinicalRecordCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ClinicalRecordCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClinicalRecordPayload>[]
+        }
+        delete: {
+          args: Prisma.ClinicalRecordDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClinicalRecordPayload>
+        }
+        update: {
+          args: Prisma.ClinicalRecordUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClinicalRecordPayload>
+        }
+        deleteMany: {
+          args: Prisma.ClinicalRecordDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ClinicalRecordUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ClinicalRecordUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClinicalRecordPayload>[]
+        }
+        upsert: {
+          args: Prisma.ClinicalRecordUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ClinicalRecordPayload>
+        }
+        aggregate: {
+          args: Prisma.ClinicalRecordAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateClinicalRecord>
+        }
+        groupBy: {
+          args: Prisma.ClinicalRecordGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ClinicalRecordGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ClinicalRecordCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ClinicalRecordCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -803,6 +878,22 @@ export const AppointmentSlotScalarFieldEnum = {
 } as const
 
 export type AppointmentSlotScalarFieldEnum = (typeof AppointmentSlotScalarFieldEnum)[keyof typeof AppointmentSlotScalarFieldEnum]
+
+
+export const ClinicalRecordScalarFieldEnum = {
+  id: 'id',
+  date: 'date',
+  reason: 'reason',
+  diagnosis: 'diagnosis',
+  treatment: 'treatment',
+  observations: 'observations',
+  weight: 'weight',
+  petId: 'petId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ClinicalRecordScalarFieldEnum = (typeof ClinicalRecordScalarFieldEnum)[keyof typeof ClinicalRecordScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1073,6 +1164,7 @@ export type GlobalOmitConfig = {
   pet?: Prisma.PetOmit
   appointment?: Prisma.AppointmentOmit
   appointmentSlot?: Prisma.AppointmentSlotOmit
+  clinicalRecord?: Prisma.ClinicalRecordOmit
 }
 
 /* Types for Logging */

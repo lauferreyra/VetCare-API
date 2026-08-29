@@ -37,3 +37,8 @@ export type Appointment = Prisma.AppointmentModel
  * 
  */
 export type AppointmentSlot = Prisma.AppointmentSlotModel
+/**
+ * Model ClinicalRecord
+ * 
+ */
+export type ClinicalRecord = Prisma.ClinicalRecordModel

@@ -39,6 +39,7 @@ model Pet {
   ownerId      Int
   owner        User          @relation(fields: [ownerId], references: [id])
   appointments Appointment[]
+  clinicalRecords ClinicalRecord[]
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
 }
@@ -66,4 +67,20 @@ model AppointmentSlot {
   appointments Appointment[]
 
   createdAt    DateTime      @default(now())
+}
+
+model ClinicalRecord {
+  id          Int      @id @default(autoincrement())
+  date        DateTime @default(now())
+  reason      String
+  diagnosis   String
+  treatment   String?
+  observations String?
+  weight      Float?
+
+  petId       Int
+  pet         Pet      @relation(fields: [petId], references: [id])
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
