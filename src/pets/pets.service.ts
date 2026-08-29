@@ -1,7 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service.js';
 import { CreatePetDto } from './dto/create-pet.dto.js';
 import { UpdatePetDto } from './dto/update-pet.dto.js';
+import { Prisma } from "../generated/prisma/client.js";
 
 @Injectable()
 export class PetsService {
@@ -82,37 +83,57 @@ export class PetsService {
   }
 
   async update(id: number, dto: UpdatePetDto, userId: number) {
-    await this.findOne(id);
+  const pet = await this.prisma.pet.findFirst({
+    where: {
+      id,
+      ownerId: userId,
+    },
+  });
 
-    if (userId !== undefined) {
-      const owner = await this.prisma.user.findUnique({
-        where: {
-          id: userId,
-        },
-      });
+  if (!pet) {
+    throw new NotFoundException("Mascota no encontrada");
+  }
 
-      if (!owner) {
-        throw new NotFoundException('El usuario propietario no existe');
-      }
+  return this.prisma.pet.update({
+    where: { id },
+    data: {
+      name: dto.name,
+      species: dto.species,
+      breed: dto.breed,
+      birthDate: dto.birthDate
+        ? new Date(dto.birthDate)
+        : undefined,
+    },
+  });
+}
+
+async remove(id: number, userId: number) {
+  const pet = await this.prisma.pet.findFirst({
+    where: {
+      id,
+      ownerId: userId,
+    },
+  });
+
+  if (!pet) {
+    throw new NotFoundException("Mascota no encontrada");
+  }
+
+  try {
+    return await this.prisma.pet.delete({
+      where: { id },
+    });
+  } catch (error) {
+    if (
+      error instanceof Prisma.PrismaClientKnownRequestError &&
+      error.code === "P2003"
+    ) {
+      throw new ConflictException(
+        "No se puede eliminar la mascota porque tiene turnos asociados",
+      );
     }
 
-    return this.prisma.pet.update({
-      where: { id },
-      data: {
-        name: dto.name,
-        species: dto.species,
-        breed: dto.breed,
-        birthDate: dto.birthDate ? new Date(dto.birthDate) : undefined,
-        ownerId: userId,
-      },
-    });
+    throw error;
   }
-
-  async remove(id: number) {
-    await this.findOne(id);
-
-    return this.prisma.pet.delete({
-      where: { id },
-    });
-  }
+}
 }

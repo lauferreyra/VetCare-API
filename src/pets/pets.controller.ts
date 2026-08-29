@@ -56,19 +56,22 @@ findOne(
   return this.petsService.create(dto, user.sub);
 }
 
-  @Patch(':id')
-  update(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() dto: UpdatePetDto,
-    @CurrentUser() user: JwtPayload,
-  ) {
-    return this.petsService.update(id, dto, user.sub);
-  }
+  @Patch(":id")
+@UseGuards(JwtAuthGuard)
+update(
+  @Param("id", ParseIntPipe) id: number,
+  @Body() dto: UpdatePetDto,
+  @CurrentUser() user: JwtPayload,
+) {
+  return this.petsService.update(id, dto, user.sub);
+}
 
-  @Delete(':id')
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.ADMIN)
-  remove(@Param('id', ParseIntPipe) id: number) {
-    return this.petsService.remove(id);
-  }
+@Delete(":id")
+@UseGuards(JwtAuthGuard)
+remove(
+  @Param("id", ParseIntPipe) id: number,
+  @CurrentUser() user: JwtPayload,
+) {
+  return this.petsService.remove(id, user.sub);
+}
 }
