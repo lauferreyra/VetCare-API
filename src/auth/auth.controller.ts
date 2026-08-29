@@ -1,10 +1,19 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthService } from './auth.service.js';
 import { LoginDto } from './dto/login.dto.js';
 import {
   ApiBearerAuth,
   ApiTags,
 } from '@nestjs/swagger';
+import { CurrentUser } from './decorators/current-user.decorator.js';
+import { JwtAuthGuard } from './guards/jwt-auth.guard.js';
+import type { JwtPayload } from './types/jwt-payload.js';
 
 @ApiTags('Appointments')
 @Controller('auth')
@@ -17,4 +26,10 @@ export class AuthController {
   login(@Body() dto: LoginDto) {
     return this.authService.login(dto);
   }
+
+  @Get('me')
+    @UseGuards(JwtAuthGuard)
+    me(@CurrentUser() user: JwtPayload) {
+    return user;
+    }
 }
