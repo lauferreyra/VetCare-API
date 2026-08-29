@@ -55,7 +55,8 @@ export const ModelName = {
   Pet: 'Pet',
   Appointment: 'Appointment',
   AppointmentSlot: 'AppointmentSlot',
-  ClinicalRecord: 'ClinicalRecord'
+  ClinicalRecord: 'ClinicalRecord',
+  Prescription: 'Prescription'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -138,6 +139,21 @@ export const ClinicalRecordScalarFieldEnum = {
 } as const
 
 export type ClinicalRecordScalarFieldEnum = (typeof ClinicalRecordScalarFieldEnum)[keyof typeof ClinicalRecordScalarFieldEnum]
+
+
+export const PrescriptionScalarFieldEnum = {
+  id: 'id',
+  date: 'date',
+  medication: 'medication',
+  dosage: 'dosage',
+  instructions: 'instructions',
+  status: 'status',
+  petId: 'petId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PrescriptionScalarFieldEnum = (typeof PrescriptionScalarFieldEnum)[keyof typeof PrescriptionScalarFieldEnum]
 
 
 export const SortOrder = {

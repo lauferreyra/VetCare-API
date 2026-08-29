@@ -40,6 +40,7 @@ model Pet {
   owner        User          @relation(fields: [ownerId], references: [id])
   appointments Appointment[]
   clinicalRecords ClinicalRecord[]
+  prescriptions Prescription[]
   createdAt    DateTime      @default(now())
   updatedAt    DateTime      @updatedAt
 }
@@ -83,4 +84,24 @@ model ClinicalRecord {
 
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+enum PrescriptionStatus {
+  ACTIVE
+  CANCELLED
+}
+
+model Prescription {
+  id           Int                @id @default(autoincrement())
+  date         DateTime           @default(now())
+  medication   String
+  dosage       String
+  instructions String?
+  status       PrescriptionStatus @default(ACTIVE)
+
+  petId        Int
+  pet          Pet                @relation(fields: [petId], references: [id])
+
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
 }

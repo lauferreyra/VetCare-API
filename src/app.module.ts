@@ -5,6 +5,7 @@ import { UsersModule } from './users/users.module.js';
 import { AppointmentsModule } from './appointments/appointments.module.js';
 import { AuthModule } from './auth/auth.module.js';
 import { ClinicalRecordsModule } from './clinical-records/clinical-records.module.js';
+import { PrescriptionsModule } from './prescriptions/prescriptions.module.js';
 
 @Module({
   imports: [PrismaModule,
@@ -12,6 +13,7 @@ import { ClinicalRecordsModule } from './clinical-records/clinical-records.modul
             UsersModule,
             AppointmentsModule,
             AuthModule,
-            ClinicalRecordsModule],
+            ClinicalRecordsModule,
+            PrescriptionsModule],
 })
 export class AppModule {}
