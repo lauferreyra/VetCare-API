@@ -19,7 +19,13 @@ import { RolesGuard } from '../auth/guards/roles.guard.js';
 import { Role } from '../generated/prisma/client.js';
 import { CurrentUser } from '../auth/decorators/current-user.decorator.js';
 import type { JwtPayload } from '../auth/types/jwt-payload.js';
+import {
+  ApiBearerAuth,
+  ApiTags,
+} from '@nestjs/swagger';
 
+@ApiTags('Pets')
+@ApiBearerAuth()
 @Controller('pets')
 export class PetsController {
   constructor(private readonly petsService: PetsService) {}

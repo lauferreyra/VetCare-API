@@ -1,6 +1,11 @@
 import 'dotenv/config';
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import {
+  DocumentBuilder,
+  SwaggerModule,
+} from '@nestjs/swagger';
+
 import { AppModule } from './app.module.js';
 
 async function bootstrap() {
@@ -12,6 +17,26 @@ async function bootstrap() {
       forbidNonWhitelisted: true, //en lugar de ignorarlas, devuelve error
       transform: true, //transforma el request al tipo del DTO
     }),
+  );
+
+  const swaggerConfig = new DocumentBuilder()
+    .setTitle('VetCare API')
+    .setDescription(
+      'REST API for VetCare - users, pets and appointments',
+    )
+    .setVersion('1.0')
+    .addBearerAuth()
+    .build();
+
+  const document = SwaggerModule.createDocument(
+    app,
+    swaggerConfig,
+  );
+
+  SwaggerModule.setup(
+    'api/docs',
+    app,
+    document,
   );
 
   await app.listen(process.env.PORT ?? 3001);
