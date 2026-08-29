@@ -48,18 +48,21 @@ findOne(
 }
 
   @Post()
-  create(
-    @Body() dto: CreatePetDto,
-  ) {
-    return this.petsService.create(dto);
-  }
+  @UseGuards(JwtAuthGuard)
+ create(
+  @Body() dto: CreatePetDto,
+  @CurrentUser() user: JwtPayload,
+) {
+  return this.petsService.create(dto, user.sub);
+}
 
   @Patch(':id')
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body() dto: UpdatePetDto,
+    @CurrentUser() user: JwtPayload,
   ) {
-    return this.petsService.update(id, dto);
+    return this.petsService.update(id, dto, user.sub);
   }
 
   @Delete(':id')

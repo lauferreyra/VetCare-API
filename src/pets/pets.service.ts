@@ -59,10 +59,10 @@ export class PetsService {
   return pet;
 }
 
-  async create(dto: CreatePetDto) {
+  async create(dto: CreatePetDto, userId: number) {
     const owner = await this.prisma.user.findUnique({
       where: {
-        id: dto.ownerId,
+        id: userId,
       },
     });
 
@@ -76,18 +76,18 @@ export class PetsService {
         species: dto.species,
         breed: dto.breed,
         birthDate: dto.birthDate ? new Date(dto.birthDate) : undefined,
-        ownerId: dto.ownerId,
+        ownerId: userId,
       },
     });
   }
 
-  async update(id: number, dto: UpdatePetDto) {
+  async update(id: number, dto: UpdatePetDto, userId: number) {
     await this.findOne(id);
 
-    if (dto.ownerId !== undefined) {
+    if (userId !== undefined) {
       const owner = await this.prisma.user.findUnique({
         where: {
-          id: dto.ownerId,
+          id: userId,
         },
       });
 
@@ -103,7 +103,7 @@ export class PetsService {
         species: dto.species,
         breed: dto.breed,
         birthDate: dto.birthDate ? new Date(dto.birthDate) : undefined,
-        ownerId: dto.ownerId,
+        ownerId: userId,
       },
     });
   }

@@ -99,37 +99,70 @@ async create(dto: CreateAppointmentDto, userId: number) {
   });
 }
 
-  async update(id: number, dto: UpdateAppointmentDto) {
-    await this.findOne(id);
+async update(
+  id: number,
+  dto: UpdateAppointmentDto,
+  userId: number,
+) {
+  const appointment = await this.prisma.appointment.findFirst({
+    where: {
+      id,
+      pet: {
+        ownerId: userId,
+      },
+    },
+  });
 
-    if (dto.petId !== undefined) {
-      const pet = await this.prisma.pet.findUnique({
-        where: {
-          id: dto.petId,
-        },
-      });
+  if (!appointment) {
+    throw new NotFoundException("Turno no encontrado");
+  }
 
-      if (!pet) {
-        throw new NotFoundException('La mascota no existe');
-      }
-    }
-
-    return this.prisma.appointment.update({
-      where: { id },
-      data: {
-        date: dto.date ? new Date(dto.date) : undefined,
-        reason: dto.reason,
-        petId: dto.petId,
-        status: dto.status,
+  if (dto.petId) {
+    const pet = await this.prisma.pet.findFirst({
+      where: {
+        id: dto.petId,
+        ownerId: userId,
       },
     });
+
+    if (!pet) {
+      throw new NotFoundException("Mascota no encontrada");
+    }
   }
 
-  async remove(id: number) {
-    await this.findOne(id);
+  return this.prisma.appointment.update({
+    where: {
+      id,
+    },
+    data: {
+      date: dto.date
+        ? new Date(dto.date)
+        : undefined,
+      reason: dto.reason,
+      petId: dto.petId,
+      status: dto.status,
+    },
+  });
+}
 
-    return this.prisma.appointment.delete({
-      where: { id },
-    });
+ async remove(id: number, userId: number) {
+  const appointment = await this.prisma.appointment.findFirst({
+    where: {
+      id,
+      pet: {
+        ownerId: userId,
+      },
+    },
+  });
+
+  if (!appointment) {
+    throw new NotFoundException("Turno no encontrado");
   }
+
+  return this.prisma.appointment.delete({
+    where: {
+      id,
+    },
+  });
+}
 }

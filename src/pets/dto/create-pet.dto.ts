@@ -38,10 +38,4 @@ export class CreatePetDto {
   @IsOptional()
   @IsDateString()
   birthDate?: string;
-
-  @ApiProperty({
-    example: 1,
-  })
-  @IsInt()
-  ownerId: number;
 }

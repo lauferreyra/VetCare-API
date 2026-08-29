@@ -59,16 +59,29 @@ create(
   return this.appointmentsService.create(dto, user.sub);
 }
 
-  @Patch(':id')
-  update(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() dto: UpdateAppointmentDto,
-  ) {
-    return this.appointmentsService.update(id, dto);
-  }
+ @Patch(":id")
+@UseGuards(JwtAuthGuard)
+update(
+  @Param("id", ParseIntPipe) id: number,
+  @Body() dto: UpdateAppointmentDto,
+  @CurrentUser() user: JwtPayload,
+) {
+  return this.appointmentsService.update(
+    id,
+    dto,
+    user.sub,
+  );
+}
 
-  @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number) {
-    return this.appointmentsService.remove(id);
-  }
+@Delete(":id")
+@UseGuards(JwtAuthGuard)
+remove(
+  @Param("id", ParseIntPipe) id: number,
+  @CurrentUser() user: JwtPayload,
+) {
+  return this.appointmentsService.remove(
+    id,
+    user.sub,
+  );
+}
 }
