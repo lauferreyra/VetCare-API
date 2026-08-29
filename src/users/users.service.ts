@@ -82,20 +82,13 @@ export class UsersService {
       }
     }
 
-    let hashedPassword: string | undefined;
-
-    if (dto.password) {
-      hashedPassword = await bcrypt.hash(dto.password, 10);
-    }
-
     return this.prisma.user.update({
       where: {
         id,
       },
       data: {
         name: dto.name,
-        email: dto.email,
-        password: hashedPassword,
+        email: dto.email
       },
       omit: {
         password: true,
