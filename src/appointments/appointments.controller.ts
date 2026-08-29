@@ -15,6 +15,7 @@ import { UpdateAppointmentDto } from './dto/update-appointment.dto.js';
 import { CurrentUser } from '../auth/decorators/current-user.decorator.js';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.js';
 import { UseGuards } from '@nestjs/common';
+import type { JwtPayload } from '../auth/types/jwt-payload.js';
 
 @Controller('appointments')
 export class AppointmentsController {
@@ -25,11 +26,7 @@ export class AppointmentsController {
 @Get()
 @UseGuards(JwtAuthGuard)
 findAll(
-  @CurrentUser() user: {
-    sub: number;
-    email: string;
-    role: string;
-  },
+  @CurrentUser() user: JwtPayload
 ) {
   return this.appointmentsService.findAllByUser(user.sub);
 }
@@ -38,11 +35,7 @@ findAll(
 @UseGuards(JwtAuthGuard)
 findOne(
   @Param('id', ParseIntPipe) id: number,
-  @CurrentUser() user: {
-    sub: number;
-    email: string;
-    role: string;
-  },
+  @CurrentUser() user: JwtPayload
 ) {
   return this.appointmentsService.findOneByUser(id, user.sub);
 }

@@ -18,6 +18,7 @@ import { Roles } from '../auth/decorators/roles.decorator.js';
 import { RolesGuard } from '../auth/guards/roles.guard.js';
 import { Role } from '../generated/prisma/client.js';
 import { CurrentUser } from '../auth/decorators/current-user.decorator.js';
+import type { JwtPayload } from '../auth/types/jwt-payload.js';
 
 @Controller('pets')
 export class PetsController {
@@ -26,11 +27,7 @@ export class PetsController {
 @Get()
 @UseGuards(JwtAuthGuard)
 findAll(
-  @CurrentUser() user: {
-    sub: number;
-    email: string;
-    role: string;
-  },
+  @CurrentUser() user: JwtPayload
 ) {
   return this.petsService.findAllByUser(user.sub);
 }
@@ -39,11 +36,7 @@ findAll(
 @UseGuards(JwtAuthGuard)
 findOne(
   @Param('id', ParseIntPipe) id: number,
-  @CurrentUser() user: {
-    sub: number;
-    email: string;
-    role: string;
-  },
+  @CurrentUser() user: JwtPayload
 ) {
   return this.petsService.findOneByUser(id, user.sub);
 }
