@@ -1,0 +1,55 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum AppointmentStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  role      Role     @default(USER)
+  pets      Pet[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Pet {
+  id           Int           @id @default(autoincrement())
+  name         String
+  species      String
+  breed        String?
+  birthDate    DateTime?
+  ownerId      Int
+  owner        User          @relation(fields: [ownerId], references: [id])
+  appointments Appointment[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model Appointment {
+  id        Int               @id @default(autoincrement())
+  date      DateTime
+  reason    String
+  status    AppointmentStatus @default(PENDING)
+  petId     Int
+  pet       Pet               @relation(fields: [petId], references: [id])
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+}

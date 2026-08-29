@@ -1,0 +1,72 @@
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+} from '@nestjs/common';
+
+import { CreatePetDto } from './dto/create-pet.dto.js';
+import { UpdatePetDto } from './dto/update-pet.dto.js';
+import { PetsService } from './pets.service.js';
+import { UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard.js';
+import { Roles } from '../auth/decorators/roles.decorator.js';
+import { RolesGuard } from '../auth/guards/roles.guard.js';
+import { Role } from '../generated/prisma/client.js';
+import { CurrentUser } from '../auth/decorators/current-user.decorator.js';
+
+@Controller('pets')
+export class PetsController {
+  constructor(private readonly petsService: PetsService) {}
+
+@Get()
+@UseGuards(JwtAuthGuard)
+findAll(
+  @CurrentUser() user: {
+    sub: number;
+    email: string;
+    role: string;
+  },
+) {
+  return this.petsService.findAllByUser(user.sub);
+}
+
+  @Get(':id')
+@UseGuards(JwtAuthGuard)
+findOne(
+  @Param('id', ParseIntPipe) id: number,
+  @CurrentUser() user: {
+    sub: number;
+    email: string;
+    role: string;
+  },
+) {
+  return this.petsService.findOneByUser(id, user.sub);
+}
+
+  @Post()
+  create(
+    @Body() dto: CreatePetDto,
+  ) {
+    return this.petsService.create(dto);
+  }
+
+  @Patch(':id')
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: UpdatePetDto,
+  ) {
+    return this.petsService.update(id, dto);
+  }
+
+  @Delete(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.ADMIN)
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.petsService.remove(id);
+  }
+}
