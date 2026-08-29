@@ -1,26 +1,11 @@
+import { ApiProperty } from '@nestjs/swagger';
 import {
-  ApiProperty,
-  ApiPropertyOptional,
-} from '@nestjs/swagger';
-
-import {
-  IsDateString,
-  IsEnum,
   IsInt,
-  IsOptional,
   IsString,
   MinLength,
 } from 'class-validator';
 
-import { AppointmentStatus } from '../../generated/prisma/client.js';
-
 export class CreateAppointmentDto {
-  @ApiProperty({
-    example: '2026-09-05T15:30:00.000Z',
-  })
-  @IsDateString()
-  date: string;
-
   @ApiProperty({
     example: 'Control anual',
   })
@@ -34,11 +19,10 @@ export class CreateAppointmentDto {
   @IsInt()
   petId: number;
 
-  @ApiPropertyOptional({
-    enum: AppointmentStatus,
-    example: AppointmentStatus.PENDING,
+  @ApiProperty({
+    example: 25,
+    description: 'ID del horario disponible seleccionado',
   })
-  @IsOptional()
-  @IsEnum(AppointmentStatus)
-  status?: AppointmentStatus;
+  @IsInt()
+  slotId: number;
 }

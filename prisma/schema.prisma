@@ -45,11 +45,25 @@ model Pet {
 
 model Appointment {
   id        Int               @id @default(autoincrement())
-  date      DateTime
+  date      DateTime?
   reason    String
   status    AppointmentStatus @default(PENDING)
+
   petId     Int
   pet       Pet               @relation(fields: [petId], references: [id])
+
+  slotId    Int?
+  slot      AppointmentSlot?  @relation(fields: [slotId], references: [id])
+
   createdAt DateTime          @default(now())
   updatedAt DateTime          @updatedAt
+}
+
+model AppointmentSlot {
+  id           Int           @id @default(autoincrement())
+  startTime    DateTime      @unique
+
+  appointments Appointment[]
+
+  createdAt    DateTime      @default(now())
 }

@@ -11,4 +11,5 @@
 export type * from './models/User.js'
 export type * from './models/Pet.js'
 export type * from './models/Appointment.js'
+export type * from './models/AppointmentSlot.js'
 export type * from './commonInputTypes.js'

@@ -8,7 +8,8 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
-
+import { Query } from '@nestjs/common';
+import { AvailabilityQueryDto } from './dto/availability-query.dto.js';
 import { AppointmentsService } from './appointments.service.js';
 import { CreateAppointmentDto } from './dto/create-appointment.dto.js';
 import { UpdateAppointmentDto } from './dto/update-appointment.dto.js';
@@ -20,6 +21,9 @@ import {
   ApiBearerAuth,
   ApiTags,
 } from '@nestjs/swagger';
+import { Role } from '../generated/prisma/client.js';
+import { Roles } from '../auth/decorators/roles.decorator.js';
+import { RolesGuard } from '../auth/guards/roles.guard.js';
 
 @ApiTags('Appointments')
 @ApiBearerAuth()
@@ -35,6 +39,16 @@ findAll(
   @CurrentUser() user: JwtPayload
 ) {
   return this.appointmentsService.findAllByUser(user.sub);
+}
+
+@Get('availability')
+@UseGuards(JwtAuthGuard)
+getAvailability(
+  @Query() query: AvailabilityQueryDto,
+) {
+  return this.appointmentsService.getAvailability(
+    query.date,
+  );
 }
 
 @Get(':id')
@@ -73,6 +87,36 @@ update(
   );
 }
 
+@Patch(':id/cancel')
+@UseGuards(JwtAuthGuard)
+cancel(
+  @Param('id', ParseIntPipe) id: number,
+  @CurrentUser() user: JwtPayload,
+) {
+  return this.appointmentsService.cancel(
+    id,
+    user.sub,
+  );
+}
+
+@Patch(':id/confirm')
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles(Role.ADMIN)
+confirm(
+  @Param('id', ParseIntPipe) id: number,
+) {
+  return this.appointmentsService.confirm(id);
+}
+
+@Patch(':id/complete')
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles(Role.ADMIN)
+complete(
+  @Param('id', ParseIntPipe) id: number,
+) {
+  return this.appointmentsService.complete(id);
+}
+
 @Delete(":id")
 @UseGuards(JwtAuthGuard)
 remove(
@@ -84,4 +128,5 @@ remove(
     user.sub,
   );
 }
+
 }

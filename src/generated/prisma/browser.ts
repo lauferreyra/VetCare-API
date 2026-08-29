@@ -32,3 +32,8 @@ export type Pet = Prisma.PetModel
  * 
  */
 export type Appointment = Prisma.AppointmentModel
+/**
+ * Model AppointmentSlot
+ * 
+ */
+export type AppointmentSlot = Prisma.AppointmentSlotModel
