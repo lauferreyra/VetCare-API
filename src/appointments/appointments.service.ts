@@ -50,18 +50,17 @@ export class AppointmentsService {
     return appointment;
   }
 
-  findAllByUser(userId: number) {
+findAllByUser(userId: number) {
   return this.prisma.appointment.findMany({
     where: {
       pet: {
         ownerId: userId,
       },
     },
+
     include: {
       pet: true,
-    },
-    orderBy: {
-      date: 'asc',
+      slot: true,
     },
   });
 }
