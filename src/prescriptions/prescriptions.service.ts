@@ -1,6 +1,7 @@
 import {
   Injectable,
   NotFoundException,
+  BadRequestException
 } from '@nestjs/common';
 
 import {
@@ -124,6 +125,15 @@ export class PrescriptionsService {
       );
     }
 
+    if (
+        prescription.status ===
+        PrescriptionStatus.CANCELLED
+        ) {
+        throw new BadRequestException(
+            'No se puede editar una receta cancelada',
+        );
+        }
+
     return this.prisma.prescription.update({
       where: {
         id,
@@ -141,31 +151,40 @@ export class PrescriptionsService {
       },
     });
   }
-
-  async cancel(id: number) {
-    const prescription =
-      await this.prisma.prescription.findUnique({
-        where: {
-          id,
-        },
-      });
-
-    if (!prescription) {
-      throw new NotFoundException(
-        'Receta no encontrada',
-      );
-    }
-
-    return this.prisma.prescription.update({
+async cancel(id: number) {
+  const prescription =
+    await this.prisma.prescription.findUnique({
       where: {
         id,
       },
-      data: {
-        status: PrescriptionStatus.CANCELLED,
-      },
-      include: {
-        pet: true,
-      },
     });
+
+  if (!prescription) {
+    throw new NotFoundException(
+      'Receta no encontrada',
+    );
   }
+
+  if (
+    prescription.status ===
+    PrescriptionStatus.CANCELLED
+  ) {
+    throw new BadRequestException(
+      'La receta ya se encuentra cancelada',
+    );
+  }
+
+  return this.prisma.prescription.update({
+    where: {
+      id,
+    },
+    data: {
+      status:
+        PrescriptionStatus.CANCELLED,
+    },
+    include: {
+      pet: true,
+    },
+  });
+}
 }
