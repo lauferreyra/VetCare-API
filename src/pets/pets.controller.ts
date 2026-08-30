@@ -47,6 +47,13 @@ findOne(
   return this.petsService.findOneByUser(id, user.sub);
 }
 
+@Get('admin/all')
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles(Role.ADMIN)
+findAllForAdmin() {
+  return this.petsService.findAllForAdmin();
+}
+
   @Post()
   @UseGuards(JwtAuthGuard)
  create(

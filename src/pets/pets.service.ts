@@ -60,6 +60,23 @@ export class PetsService {
   return pet;
 }
 
+async findAllForAdmin() {
+  return this.prisma.pet.findMany({
+    include: {
+      owner: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+        },
+      },
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+  });
+}
+
   async create(dto: CreatePetDto, userId: number) {
     const owner = await this.prisma.user.findUnique({
       where: {

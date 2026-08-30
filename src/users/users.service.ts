@@ -50,22 +50,59 @@ export class UsersService {
     });
   }
 
-  async findOne(id: number) {
-    const user = await this.prisma.user.findUnique({
-      where: {
-        id,
+async findOne(id: number) {
+  const user = await this.prisma.user.findUnique({
+    where: {
+      id,
+    },
+    omit: {
+      password: true,
+    },
+    include: {
+      pets: {
+        include: {
+          appointments: {
+            include: {
+              slot: true,
+            },
+            orderBy: {
+              createdAt: 'desc',
+            },
+          },
+        },
       },
-      omit: {
-        password: true,
-      },
-    });
+    },
+  });
 
-    if (!user) {
-      throw new NotFoundException('Usuario no encontrado');
-    }
-
-    return user;
+  if (!user) {
+    throw new NotFoundException('Usuario no encontrado');
   }
+
+  const appointments = user.pets.flatMap((pet) =>
+    pet.appointments.map((appointment) => ({
+      ...appointment,
+      pet: {
+        id: pet.id,
+        name: pet.name,
+      },
+    })),
+  );
+
+  const pets = user.pets.map(
+    ({ appointments: _, ...pet }) => pet,
+  );
+
+  return {
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    role: user.role,
+    createdAt: user.createdAt,
+    updatedAt: user.updatedAt,
+    pets,
+    appointments,
+  };
+}
 
   async update(id: number, dto: UpdateUserDto) {
     await this.findOne(id);

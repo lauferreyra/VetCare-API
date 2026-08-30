@@ -60,6 +60,13 @@ findOne(
   return this.appointmentsService.findOneByUser(id, user.sub);
 }
 
+@Get('admin/all')
+@UseGuards(JwtAuthGuard, RolesGuard)
+@Roles(Role.ADMIN)
+findAllForAdmin() {
+  return this.appointmentsService.findAllForAdmin();
+}
+
   @Post()
 @UseGuards(JwtAuthGuard)
 create(

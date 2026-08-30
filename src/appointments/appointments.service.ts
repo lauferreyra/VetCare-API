@@ -309,6 +309,28 @@ async update(
   });
 }
 
+async findAllForAdmin() {
+  return this.prisma.appointment.findMany({
+    include: {
+      pet: {
+        include: {
+          owner: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+            },
+          },
+        },
+      },
+      slot: true,
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+  });
+}
+
 async getAvailability(date: string) {
   const selectedDate = new Date(`${date}T00:00:00-03:00`);
 
