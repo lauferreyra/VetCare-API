@@ -6,6 +6,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Res,
   UseGuards,
 } from '@nestjs/common';
 
@@ -19,6 +20,7 @@ import { Role } from '../generated/prisma/client.js';
 import { CreatePrescriptionDto } from './dto/create-prescription.dto.js';
 import { UpdatePrescriptionDto } from './dto/update-prescription.dto.js';
 import { PrescriptionsService } from './prescriptions.service.js';
+import type { Response } from 'express';
 
 @Controller('prescriptions')
 export class PrescriptionsController {
@@ -40,6 +42,38 @@ export class PrescriptionsController {
     );
   }
 
+  @Get(':id/pdf')
+  @UseGuards(JwtAuthGuard)
+  async downloadPdf(
+    @Param('id', ParseIntPipe)
+    id: number,
+
+    @CurrentUser()
+    user: JwtPayload,
+
+    @Res()
+    response: Response,
+  ) {
+    const pdf =
+      await this.prescriptionsService.generatePdf(
+        id,
+        user,
+      );
+
+    response.set({
+      'Content-Type':
+        'application/pdf',
+
+      'Content-Disposition':
+        `attachment; filename="receta-${id}.pdf"`,
+
+      'Content-Length':
+        pdf.length,
+    });
+
+    response.send(pdf);
+  }
+  
   @Get(':id')
   @UseGuards(JwtAuthGuard)
   findOne(
@@ -82,4 +116,5 @@ export class PrescriptionsController {
   ) {
     return this.prescriptionsService.cancel(id);
   }
+
 }

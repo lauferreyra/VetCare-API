@@ -13,10 +13,13 @@ import { PrismaService } from '../prisma/prisma.service.js';
 
 import { CreatePrescriptionDto } from './dto/create-prescription.dto.js';
 import { UpdatePrescriptionDto } from './dto/update-prescription.dto.js';
+import { PrescriptionPdfService } from './pdf/prescription-pdf.service.js';
 
 @Injectable()
 export class PrescriptionsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService,
+    private readonly prescriptionPdfService: PrescriptionPdfService,
+  ) {}
 
   async findByPet(
     petId: number,
@@ -186,5 +189,17 @@ async cancel(id: number) {
       pet: true,
     },
   });
+}
+
+async generatePdf(
+  id: number,
+  user: JwtPayload,
+) {
+  const prescription =
+    await this.findOne(id, user);
+
+  return this.prescriptionPdfService.generate(
+    prescription,
+  );
 }
 }
